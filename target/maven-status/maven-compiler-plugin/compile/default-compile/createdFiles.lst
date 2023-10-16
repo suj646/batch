@@ -1,0 +1,6 @@
+io\spring\batch\domain\Person$PersonBuilder.class
+io\spring\batch\DatabaseOutputApplication.class
+io\spring\batch\JobConfiguration.class
+io\spring\batch\domain\Person.class
+io\spring\batch\JobConfiguration$1.class
+io\spring\batch\domain\PersonFieldSetMapper.class
