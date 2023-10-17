@@ -208,45 +208,119 @@ public class JobConfiguration {
 
 	
 	
+//	@Bean
+//	public Step step2() {
+//	    return stepBuilderFactory.get("step2")
+//	            .tasklet((contribution, chunkContext) -> {
+//	                // This is a Tasklet step for comparing data in the processedData list with data in the database.
+//
+//	                // Retrieve the processed data from step1
+//	                List<Person> processedData = processedData();
+//
+//	                // Sample query using JdbcTemplate to retrieve data from the database
+//	                JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+//	                List<Person> databaseData = jdbcTemplate.query(
+//	                        "SELECT * FROM PERSON",
+//	                        new BeanPropertyRowMapper<>(Person.class)
+//	                );
+//
+//	                // Log the size of processedData and databaseData
+//	                System.out.println("Processed data size: " + processedData.size());
+//	                System.out.println("Database data size: " + databaseData.size());
+//
+//	                // Compare the data from Step 1 with the data in the database
+//	                for (Person dbPerson : databaseData) {
+//	                    for (Person csvPerson : processedData) {
+//	                        if (dbPerson.getId() == csvPerson.getId()) {
+//	                            if (!dbPerson.equals(csvPerson)) {
+//	                                // Data doesn't match
+//	                                System.out.println("Data mismatch for ID: " + dbPerson.getId());
+//	                            } else {
+//	                                // Data matches
+//	                                System.out.println("Data matches for ID: " + dbPerson.getId());
+//	                            }
+//	                        }
+//	                    }
+//	                }
+//
+//	                return RepeatStatus.FINISHED;
+//	            })
+//	            .build(); 
+//	}
+	
 	@Bean
 	public Step step2() {
 	    return stepBuilderFactory.get("step2")
-	            .tasklet((contribution, chunkContext) -> {
-	                // This is a Tasklet step for comparing data in the processedData list with data in the database.
+	        .tasklet((contribution, chunkContext) -> {
+	            // Sample query using JdbcTemplate to retrieve data from the database
+	            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	            List<Person> databaseData = jdbcTemplate.query(
+	                "SELECT * FROM PERSON",
+	                new BeanPropertyRowMapper<>(Person.class)
+	            );
 
-	                // Retrieve the processed data from step1
-	                List<Person> processedData = processedData();
+	            // Retrieve the processed data from step1
+	            List<Person> processedData = processedData();
 
-	                // Sample query using JdbcTemplate to retrieve data from the database
-	                JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	                List<Person> databaseData = jdbcTemplate.query(
-	                        "SELECT * FROM PERSON",
-	                        new BeanPropertyRowMapper<>(Person.class)
-	                );
+	            // Log the size of processedData and databaseData
+	            System.out.println("Processed data size: " + processedData.size());
+	            System.out.println("Database data size: " + databaseData.size());
 
-	                // Log the size of processedData and databaseData
-	                System.out.println("Processed data size: " + processedData.size());
-	                System.out.println("Database data size: " + databaseData.size());
-
-	                // Compare the data from Step 1 with the data in the database
-	                for (Person dbPerson : databaseData) {
-	                    for (Person csvPerson : processedData) {
-	                        if (dbPerson.getId() == csvPerson.getId()) {
-	                            if (!dbPerson.equals(csvPerson)) {
-	                                // Data doesn't match
-	                                System.out.println("Data mismatch for ID: " + dbPerson.getId());
-	                            } else {
-	                                // Data matches
-	                                System.out.println("Data matches for ID: " + dbPerson.getId());
-	                            }
+	            // Compare the data from Step 1 with the data in the database
+	            for (Person dbPerson : databaseData) {
+	                for (Person csvPerson : processedData) {
+	                    if (dbPerson.getId() == csvPerson.getId()) {
+	                        if (!dbPerson.equals(csvPerson)) {
+	                            // Data doesn't match
+	                            System.out.println("Data mismatch for ID: " + dbPerson.getId());
+	                            
+	                            // Implement your update logic here
+	                            // Sample update using JdbcTemplate:
+	                            int updatedRows = jdbcTemplate.update(
+	                                "UPDATE PERSON SET firstName = ? WHERE id = ?",
+	                                csvPerson.getFirstName(),  // New firstName
+	                                dbPerson.getId()); // ID of the row you want to update
+	                            System.out.println("Updated " + updatedRows + " rows in the PERSON table.");
+	                        } else {
+	                            // Data matches
+	                            System.out.println("Data matches for ID: " + dbPerson.getId());
 	                        }
 	                    }
 	                }
+	            }
 
-	                return RepeatStatus.FINISHED;
-	            })
-	            .build(); 
+	            // Identify records to be deleted (present in database but not in CSV data)
+//	            List<Integer> idsToDelete = new ArrayList<>();
+	            List<Long> idsToDelete = new ArrayList<>();
+	            for (Person dbPerson : databaseData) {
+	                boolean found = false;
+	                for (Person csvPerson : processedData) {
+	                    if (dbPerson.getId() == csvPerson.getId()) {
+	                        found = true;
+	                        break;
+	                    }
+	                }
+	                if (!found) {
+	                    // Record is present in the database but not in CSV data
+	                    idsToDelete.add(dbPerson.getId());
+	                }
+	            }
+
+	            // Delete records from the database
+	            for (Long id : idsToDelete) {
+	                int deletedRows = jdbcTemplate.update(
+	                    "DELETE FROM PERSON WHERE id = ?",
+	                    id
+	                );
+	                System.out.println("Deleted " + deletedRows + " rows in the PERSON table.");
+	            }
+
+	            return RepeatStatus.FINISHED;
+	        })
+	        .build();
 	}
+	
+
 	
 	@Bean
 	public Job job() {

@@ -36,14 +36,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Subcouncious/.m2/repository/org/springframework/batch/spring-batch-core/4.1.0.RELEASE/spring-batch-core-4.1.0.RELEASE.jar" sourcepath="C:/Users/Subcouncious/.m2/repository/org/springframework/batch/spring-batch-core/4.1.0.RELEASE/spring-batch-core-4.1.0.RELEASE-sources.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.springframework.batch"/>
-			<attribute name="maven.artifactId" value="spring-batch-core"/>
-			<attribute name="maven.version" value="4.1.0.RELEASE"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
