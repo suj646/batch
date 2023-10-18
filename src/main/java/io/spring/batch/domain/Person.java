@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class Person {
 
 	
-	private long id;
+	private int id;
 	private String firstName;
 	private String lastName;
 	private Date birthdate;
-	public Person(long id, String firstName, String lastName, Date birthdate) {
+	public Person(int id, String firstName) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -30,7 +30,7 @@ public class Person {
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getFirstName() {
