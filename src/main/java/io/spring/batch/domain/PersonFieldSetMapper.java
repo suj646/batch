@@ -8,11 +8,11 @@ public class PersonFieldSetMapper implements FieldSetMapper<Person> {
 
 	@Override
 	public Person mapFieldSet(FieldSet fieldSet) throws BindException {
-		return new Person((int) fieldSet.readLong("id"),
-				fieldSet.readString("firstName")
-				);
+		return new Person(fieldSet.readInt("id"),
+				fieldSet.readString("firstName"),
+				fieldSet.readString("lastName"),
+				fieldSet.readDate("birthdate", "yyyy-MM-dd HH:mm:ss"));
 	}
-
 //	@Override
 //	public Person mapFieldSet(FieldSet fieldSet) throws BindException {
 //		// TODO Auto-generated method stub

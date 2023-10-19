@@ -16,7 +16,7 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	private Date birthdate;
-	public Person(int id, String firstName) {
+	public Person(int id, String firstName,String lastName,Date birthdate) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -27,7 +27,7 @@ public class Person {
 		super();
 		
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
