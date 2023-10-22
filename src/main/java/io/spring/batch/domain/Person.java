@@ -6,31 +6,34 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @Builder
 public class Person {
-
 	
-	private int id;
-	private String firstName;
-	private String lastName;
-	private Date birthdate;
-	public Person(int id, String firstName,String lastName,Date birthdate) {
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthdate=" + birthdate
+				+ "]";
+	}
+	public Person() {
+		super();
+		
+	}
+	public Person(long id, String firstName, String lastName, Date birthdate) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthdate = birthdate;
 	}
-	public Person() {
-		super();
-		
-	}
-	public int getId() {
+	private long id;
+	private String firstName;
+	private String lastName;
+	private Date birthdate;
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getFirstName() {
@@ -51,4 +54,8 @@ public class Person {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
+	
+	
+	
+	
 }

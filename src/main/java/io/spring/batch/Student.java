@@ -3,17 +3,15 @@ package io.spring.batch;
 import java.util.Date;
 
 public class Student {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private Date birthdate;
 
-    // Constructors, getters, and setters
-
     public Student() {
     }
 
-    public Student(int id, String firstName, String lastName, Date birthdate) {
+    public Student(long id, String firstName, String lastName, Date birthdate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,11 +20,11 @@ public class Student {
 
     // Getters and Setters
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -39,7 +37,7 @@ public class Student {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName; 
     }
 
     public void setLastName(String lastName) {

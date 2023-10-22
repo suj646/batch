@@ -4,9 +4,9 @@ C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\dt
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\step3.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\dto\BinDTO.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\domain\Person2.java
-C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\StudentItemWriter.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\Student.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\domain\Person.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\JobConfiguration.java
+C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomItemWriter.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomItemProcessor.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\DatabaseOutputApplication.java

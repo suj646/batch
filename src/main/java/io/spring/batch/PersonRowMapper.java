@@ -3,7 +3,6 @@ package io.spring.batch;
 import org.springframework.jdbc.core.RowMapper;
 
 import io.spring.batch.domain.Person;
-import io.spring.batch.domain.Person2;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
