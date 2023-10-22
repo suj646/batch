@@ -10,31 +10,39 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Person {
 	
+	
+	private long id1;
+	private String firstName;
+	private String lastName;
+	private Date birthdate;
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthdate=" + birthdate
+		return "Person [id1=" + id1 + ", firstName=" + firstName + ", lastName=" + lastName + ", birthdate=" + birthdate
 				+ "]";
 	}
 	public Person() {
 		super();
-		
+		// TODO Auto-generated constructor stub
 	}
-	public Person(long id, String firstName, String lastName, Date birthdate) {
+	public Person(long id1, String firstName, String lastName, Date birthdate) {
 		super();
-		this.id = id;
+		this.id1 = id1;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthdate = birthdate;
 	}
-	private long id;
-	private String firstName;
-	private String lastName;
-	private Date birthdate;
-	public long getId() {
-		return id;
+	public long getId1() {
+		return id1;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setId1(long id1) {
+		this.id1 = id1;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -54,6 +62,8 @@ public class Person {
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
+	
+	
 	
 	
 	

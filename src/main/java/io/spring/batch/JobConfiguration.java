@@ -79,7 +79,7 @@ public class JobConfiguration {
 		DefaultLineMapper<Person> customerLineMapper = new DefaultLineMapper<>();
 
 		DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
-		tokenizer.setNames(new String[] {"id", "firstName", "lastName", "birthdate"});
+		tokenizer.setNames(new String[] {"id1", "firstName", "lastName", "birthdate"});
 
 		customerLineMapper.setLineTokenizer(tokenizer);
 		customerLineMapper.setFieldSetMapper(new PersonFieldSetMapper());
@@ -95,16 +95,16 @@ public class JobConfiguration {
 	        @Override
 	        public Student process(Person person) throws Exception {
 	            // Check if the ID exists in the "PERSON" table
-	            boolean idExistsInPerson = checkIfIdExistsInPersonTable(person.getId());
+	            boolean idExistsInPerson = checkIfIdExistsInPersonTable(person.getId1());
 
 	            if (idExistsInPerson) {
 	                // Check if the ID exists in the "STUDENT" table
-	                boolean idExistsInStudent = checkIfIdExistsInStudentTable(person.getId());
+	                boolean idExistsInStudent = checkIfIdExistsInStudentTable(person.getId1());
 	                
 	                if (idExistsInStudent) {
 	                    // If the ID exists in "STUDENT," update the existing record
 	                    Student student = new Student();
-	                    student.setId(person.getId());  
+	                    student.setId1(person.getId1());  
 	                    student.setFirstName(person.getFirstName());
 	                    student.setLastName(person.getLastName());
 	                    student.setBirthdate(person.getBirthdate());
@@ -116,7 +116,7 @@ public class JobConfiguration {
 	                } else {
 	                    // If the ID doesn't exist in "STUDENT," create a new student
 	                    Student student = new Student();
-	                    student.setId(person.getId());
+	                    student.setId1(person.getId1());
 	                    student.setFirstName(person.getFirstName());
 	                    student.setLastName(person.getLastName());
 	                    student.setBirthdate(person.getBirthdate());
@@ -188,7 +188,7 @@ public class JobConfiguration {
 		JdbcBatchItemWriter<Person> itemWriter = new JdbcBatchItemWriter<>();
 
 		itemWriter.setDataSource(this.dataSource);
-		itemWriter.setSql("INSERT INTO person (id, firstName, lastName, birthdate) VALUES (:id, :firstName, :lastName, :birthdate) " +
+		itemWriter.setSql("INSERT INTO person (id, firstName, lastName, birthdate) VALUES (:id1, :firstName, :lastName, :birthdate) " +
 	            "ON DUPLICATE KEY UPDATE " +
 	            "firstName=VALUES(firstName), lastName=VALUES(lastName), birthdate=VALUES(birthdate)");
 	    itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider());
@@ -214,7 +214,7 @@ public class JobConfiguration {
 	    JdbcBatchItemWriter<Student> itemWriter = new JdbcBatchItemWriter<>();
 
 	    itemWriter.setDataSource(this.dataSource);
-	    itemWriter.setSql("INSERT INTO STUDENT (id, firstName, lastName, birthdate) VALUES (:id, :firstName, :lastName, :birthdate) " +
+	    itemWriter.setSql("INSERT INTO STUDENT (id, firstName, lastName, birthdate) VALUES (:id1, :firstName, :lastName, :birthdate) " +
 	            "ON DUPLICATE KEY UPDATE " +
 	            "firstName=VALUES(firstName), lastName=VALUES(lastName), birthdate=VALUES(birthdate)");
 	    itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider());
