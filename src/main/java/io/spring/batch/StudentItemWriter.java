@@ -35,9 +35,10 @@ public class StudentItemWriter implements ItemWriter<Student> {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.studentWriter = new JdbcBatchItemWriterBuilder<Student>()
                 .dataSource(dataSource)
-                .sql("INSERT INTO STUDENT (id, firstName, lastName, birthdate) VALUES (:id1, :firstName, :lastName, :birthdate) " +
-                        "ON DUPLICATE KEY UPDATE " +
-                        "firstName=VALUES(firstName), lastName=VALUES(lastName), birthdate=VALUES(birthdate)")
+                .sql("INSERT INTO student (id, first_Name, last_Name, birthdate) "
+                		+ "VALUES (:id1, :firstName, :lastName, :birthdate) "
+                		+ "ON DUPLICATE KEY UPDATE "
+                		+ "first_Name=VALUES(first_Name), last_Name=VALUES(last_Name), birthdate=VALUES(birthdate)")
                 .itemSqlParameterSourceProvider(new ItemSqlParameterSourceProvider<Student>() {
                     @Override
                     public SqlParameterSource createSqlParameterSource(Student student) {

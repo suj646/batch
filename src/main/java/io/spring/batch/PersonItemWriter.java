@@ -14,10 +14,10 @@ public class PersonItemWriter extends JdbcBatchItemWriter<Person> {
 
     public PersonItemWriter(DataSource dataSource) {
         this.setDataSource(dataSource);
-        this.setSql("INSERT INTO person (id, firstName, lastName, birthdate) " +
-                "VALUES (:id1, :firstName, :lastName, :birthdate) " +
-                "ON DUPLICATE KEY UPDATE " +
-                "firstName=VALUES(firstName), lastName=VALUES(lastName), birthdate=VALUES(birthdate)");
+        this.setSql("INSERT INTO person (id, first_Name, last_Name, birthdate) "
+        		+ "VALUES (:id1, :firstName, :lastName, :birthdate) "
+        		+ "ON DUPLICATE KEY UPDATE "
+        		+ "first_Name = VALUES(first_Name), last_Name = VALUES(last_Name), birthdate = VALUES(birthdate)");
         this.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider());
         this.setAssertUpdates(false); // Do not assert that updates were performed
 
