@@ -1,5 +1,6 @@
 package io.spring.batch;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Student {
@@ -7,6 +8,7 @@ public class Student {
     private String firstName;
     private String lastName;
     private Date birthdate;
+   
 	public Student(long id1, String firstName, String lastName, Date birthdate) {
 		super();
 		this.id1 = id1;
@@ -24,6 +26,7 @@ public class Student {
 	public void setId1(long id1) {
 		this.id1 = id1;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -47,6 +50,9 @@ public class Student {
 		return "Student [id1=" + id1 + ", firstName=" + firstName + ", lastName=" + lastName + ", birthdate="
 				+ birthdate + "]";
 	}
+	
+	
+	
 
    
 }

@@ -1,0 +1,4 @@
+INSERT INTO student (id, first_name, last_name, birthdate) 
+VALUES (:id1, :firstName, :lastName, :birthdate) 
+ON CONFLICT (id) DO UPDATE
+SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, birthdate = EXCLUDED.birthdate;
