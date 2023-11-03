@@ -20,53 +20,63 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Component;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+
+@Component
 public class StudentItemWriter implements ItemWriter<Student> {
 
-    private final JdbcBatchItemWriter<Student> studentWriter;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public StudentItemWriter(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.studentWriter = new JdbcBatchItemWriterBuilder<Student>()
-                .dataSource(dataSource)
-                .sql("INSERT INTO student (id, first_Name, last_Name, birthdate) "
-                		+ "VALUES (:id1, :firstName, :lastName, :birthdate) "
-                		+ "ON DUPLICATE KEY UPDATE "
-                		+ "first_Name=VALUES(first_Name), last_Name=VALUES(last_Name), birthdate=VALUES(birthdate)")
-                .itemSqlParameterSourceProvider(new ItemSqlParameterSourceProvider<Student>() {
-                    @Override
-                    public SqlParameterSource createSqlParameterSource(Student student) {
-                        MapSqlParameterSource source = new MapSqlParameterSource();
-                        source.addValue("id1", student.getId1());
-                        source.addValue("firstName", student.getFirstName());
-                        source.addValue("lastName", student.getLastName());
-                        source.addValue("birthdate", student.getBirthdate());
-                        return source;
-                    }
-                })
-                .assertUpdates(false)
-                .build();
-        studentWriter.afterPropertiesSet();
     }
 
     @Override
     public void write(List<? extends Student> students) throws Exception {
-        studentWriter.write(students);
-        deleteRecordsNotInStudentTable();
+        for (Student student : students) {
+            if (studentExists(student.getId1())) {
+                updateStudent(student);
+            } else {
+                insertStudent(student);
+            }
+        }
+
+        List<Long> deletedIds = deleteRecordsNotInStudentTable();
+        if (!deletedIds.isEmpty()) {
+            System.out.println("Deleted IDs: " + deletedIds);
+        }
     }
 
-    private void deleteRecordsNotInStudentTable() {
+    private void insertStudent(Student student) {
+        String sql = "INSERT INTO student (id, first_Name, last_Name, birthdate) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, student.getId1(), student.getFirstName(), student.getLastName(), student.getBirthdate());
+    }
+
+    private void updateStudent(Student student) {
+        String sql = "UPDATE student SET first_Name = ?, last_Name = ?, birthdate = ? WHERE id = ?";
+        jdbcTemplate.update(sql, student.getFirstName(), student.getLastName(), student.getBirthdate(), student.getId1());
+    }
+
+    private boolean studentExists(long id) {
+        String sql = "SELECT COUNT(*) FROM student WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, id) > 0;
+    }
+
+    private List<Long> deleteRecordsNotInStudentTable() {
+        String selectDeletedIdsSql = "SELECT id FROM STUDENT WHERE id NOT IN (SELECT id FROM PERSON)";
+        List<Long> deletedIds = jdbcTemplate.queryForList(selectDeletedIdsSql, Long.class);
+
         String deleteSql = "DELETE FROM STUDENT WHERE id NOT IN (SELECT id FROM PERSON)";
         jdbcTemplate.update(deleteSql);
+
+        return deletedIds;
     }
 }
-
-
 
 

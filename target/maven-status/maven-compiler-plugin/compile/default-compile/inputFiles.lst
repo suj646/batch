@@ -1,11 +1,14 @@
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\domain\PersonFieldSetMapper.java
+C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonItemProcessor.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonLineMapper.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonToStudentProcessor.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\Student.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\Person.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonFieldSetMapper.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonItemPreparedStatementSetter.java
+C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomDeleteItemWriter.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\domain\Person.java
+C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomPersonItemProcessor.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\DatabaseOutputApplication.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonRowMapper.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\dto\Sst2BinStagingDTO.java
@@ -16,4 +19,3 @@ C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\St
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\JobConfiguration.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomItemWriter.java
 C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\PersonItemReader.java
-C:\Users\Subcouncious\eclipse-workspace\poeflow\src\main\java\io\spring\batch\CustomItemProcessor.java

@@ -1,0 +1,84 @@
+
+@Configuration
+@Slf4j
+public class JobConfiguration {
+	
+	private static final Logger logger = Logger.getLogger(JobConfiguration.class.getName());
+	
+	
+	@Autowired
+	public JobBuilderFactory jobBuilderFactory;
+
+	@Autowired
+	public StepBuilderFactory stepBuilderFactory;
+	
+//	private  StudentWriteListener studentWriteListener;
+	
+	private final JdbcTemplate jdbcTemplate; 
+
+    public JobConfiguration(DataSource dataSource) {
+        // Initialize the JdbcTemplate with the DataSource
+    	this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+	
+
+	
+	@Autowired
+	public DataSource dataSource;
+	
+	
+	@Bean
+	public FlatFileItemReader<Person> personItemReader() {
+	    return new FlatFileItemReader<Person>();
+	}
+	
+	@Bean
+	public ItemProcessor<Person, Student> personToStudentProcessor() {
+	    return new PersonToStudentProcessor(dataSource);
+	}
+	
+	
+	@Bean
+	public JdbcBatchItemWriter<Person> personItemWriter() {
+	    return new PersonItemWriter(dataSource);
+	}
+
+	
+	@Bean
+	public StudentItemWriter studentItemWriter() {
+	    return new StudentItemWriter(dataSource);
+	}
+
+
+
+
+	@Bean
+    public Step step1() {
+        return stepBuilderFactory.get("step1")
+                .<Person, Person>chunk(10)
+                .reader(personItemReader())  // Read from the flat file and insert into the "person" table
+                .writer(personItemWriter())  // Write to the "person" table
+                .build();
+    }
+	
+	
+	@Bean
+    public Step step2() {
+        return stepBuilderFactory.get("step2")
+                .<Person, Student>chunk(10)
+                .reader(personItemReader())
+                .processor(personToStudentProcessor())
+                .writer(studentItemWriter())
+                .build();
+    }
+
+	@Bean
+    public Job job() {
+        return jobBuilderFactory.get("job")
+                .start(step1())
+                .next(step2())
+//                .on("COMPLETED").to(deleteStudentRecordsStep())
+//                .end()
+                .build();
+    }

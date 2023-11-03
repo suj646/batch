@@ -1,6 +1,8 @@
 package io.spring.batch;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -15,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @EnableBatchProcessing
 public class DatabaseOutputApplication implements CommandLineRunner {
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseOutputApplication.class);
 
 	@Autowired
 	private JobLauncher jobLauncher;
@@ -35,5 +38,6 @@ public class DatabaseOutputApplication implements CommandLineRunner {
 		
 		JobExecution execution = jobLauncher.run(job, jobParameters);
 		System.out.println("STATUS :: "+execution.getStatus());
+		
 	}
 }
