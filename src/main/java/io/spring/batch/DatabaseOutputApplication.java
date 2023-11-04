@@ -13,17 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
 
 @SpringBootApplication
 @EnableBatchProcessing
+@ComponentScan(basePackages = "io.spring.batch")
 public class DatabaseOutputApplication implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseOutputApplication.class);
 
 	@Autowired
-	private JobLauncher jobLauncher;
+	public JobLauncher jobLauncher;
 
 	@Autowired
-	private Job job;
+	public Job job;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DatabaseOutputApplication.class, args);
