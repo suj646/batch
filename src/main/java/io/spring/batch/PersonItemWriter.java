@@ -10,10 +10,16 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Component
 public class PersonItemWriter implements ItemWriter<Person> {
+	private static final Logger logger = Logger.getLogger(PersonItemWriter.class.getName());
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -23,20 +29,17 @@ public class PersonItemWriter implements ItemWriter<Person> {
 
     @Override
     public void write(List<? extends Person> persons) throws Exception {
+    	Set<Long> processedIds = new HashSet<>();
         for (Person person : persons) {
+//        	logger.info("Processing person: " + person);
             if (personExists(person.getId1())) {
                 updatePerson(person);
             } else {
                 insertPerson(person);
             }
+            processedIds.add(person.getId1());
         }
-        
-//        List<Long> deletedIds = deleteRecordsNotInPersonTable();
-//        if (!deletedIds.isEmpty()) {
-//            System.out.println("Deleted IDs: " + deletedIds);
-//        }
-        
-        
+        logger.info("Processed IDs: " + processedIds);
     }
 
     private void insertPerson(Person person) {
@@ -52,16 +55,6 @@ public class PersonItemWriter implements ItemWriter<Person> {
     private boolean personExists(long id) {
         String sql = "SELECT COUNT(*) FROM person WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, id) > 0;
-    }
-    
-    private List<Long> deleteRecordsNotInPersonTable() {
-        String selectDeletedIdsSql = "SELECT id FROM PERSON WHERE id NOT IN (SELECT id FROM STUDENT)";
-        List<Long> deletedIds = jdbcTemplate.queryForList(selectDeletedIdsSql, Long.class);
-
-        String deleteSql = "DELETE FROM PERSON WHERE id NOT IN (SELECT id FROM STUDENT)";
-        jdbcTemplate.update(deleteSql);
-
-        return deletedIds;
     }
 }
 

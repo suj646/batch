@@ -49,12 +49,12 @@ public class PersonToStudentProcessor implements ItemProcessor<Person, Student> 
 
 	private boolean checkIfPersonExistsInStudentTable(Person person) {
 		try (Connection connection = dataSource.getConnection()) {
-			String sql = "SELECT COUNT(*) FROM STUDENT WHERE id = ? AND first_name = ? AND last_name = ? AND birthdate = ?";
+			String sql = "SELECT COUNT(*) FROM STUDENT WHERE id = ? AND first_name = ? AND last_name = ?";
 			try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 				preparedStatement.setLong(1, person.getId1());
 				preparedStatement.setString(2, person.getFirstName());
 				preparedStatement.setString(3, person.getLastName());
-				preparedStatement.setDate(4, new java.sql.Date(person.getBirthdate().getTime()));
+//				preparedStatement.setDate(4, new java.sql.Date(person.getBirthdate().getTime()));
 
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
 					if (resultSet.next()) {

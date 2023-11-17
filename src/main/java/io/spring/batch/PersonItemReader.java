@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 
 public class PersonItemReader extends FlatFileItemReader<Person> {
 	 private static final Logger logger = LoggerFactory.getLogger(CustomDeleteItemWriter.class);
-	private Set<Long> flatFileIds;
+	
     public PersonItemReader() {
         setLinesToSkip(1);
         setResource(new ClassPathResource("/data/person.csv"));
@@ -30,31 +30,6 @@ public class PersonItemReader extends FlatFileItemReader<Person> {
         setLineMapper(customerLineMapper);
     }
     
-    public Set<Long> readFlatFileIds() {
-        if (flatFileIds == null) {
-            flatFileIds = new HashSet<>();
-
-            try {
-                open(new ExecutionContext());
-
-                Person item;
-                do {
-                    item = read();
-                    if (item != null) {
-                        flatFileIds.add(item.getId1());
-                    }
-                } while (item != null);
-
-                close();
-            } catch (Exception e) {
-                // Handle any exceptions
-//               e.printStackTrace();
-               
-               logger.info("Error while reading the person ", e);
-            }
-        }
-
-        return flatFileIds;
-    }
+   
 }
 

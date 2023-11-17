@@ -54,13 +54,30 @@ public class StudentItemWriter implements ItemWriter<Student> {
     }
 
     private void insertStudent(Student student) {
-        String sql = "INSERT INTO student (id, first_Name, last_Name, birthdate) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, student.getId1(), student.getFirstName(), student.getLastName(), student.getBirthdate());
+        String sql = "INSERT INTO student (id, first_name, last_name, birthdate, age, city) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(
+            sql,
+            student.getId1(),
+            student.getFirstName(),
+            student.getLastName(),
+            student.getBirthdate(),
+            StudentDefaults.DEFAULT_AGE, // Default age from constants
+            StudentDefaults.DEFAULT_CITY // Default city from constants
+        );
     }
 
+
     private void updateStudent(Student student) {
-        String sql = "UPDATE student SET first_Name = ?, last_Name = ?, birthdate = ? WHERE id = ?";
-        jdbcTemplate.update(sql, student.getFirstName(), student.getLastName(), student.getBirthdate(), student.getId1());
+        String sql = "UPDATE student SET first_name = ?, last_name = ?, birthdate = ?, age = ?, city = ? WHERE id = ?";
+        jdbcTemplate.update(
+            sql,
+            student.getFirstName(),
+            student.getLastName(),
+            student.getBirthdate(),
+            StudentDefaults.UPDATED_AGE, // Default age from constants
+            StudentDefaults.DEFAULT_CITY_UPDATED, // Default city from constants
+            student.getId1()
+        );
     }
 
     private boolean studentExists(long id) {

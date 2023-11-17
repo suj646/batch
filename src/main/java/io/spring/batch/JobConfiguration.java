@@ -25,6 +25,7 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
@@ -46,6 +47,7 @@ import org.springframework.batch.core.StepListener;
 
 import com.mysql.cj.log.Log;
 
+import io.spring.batch.domain.DatabaseUtility;
 import io.spring.batch.domain.StepService;
 
 import org.springframework.batch.item.ItemProcessor;
@@ -87,6 +89,7 @@ public class JobConfiguration {
 
 	@Autowired
 	private DataSource dataSource; // Make sure to inject your DataSource
+	
 
 	@Bean
 	public JdbcTemplate jdbcTemplate() {
@@ -113,14 +116,28 @@ public class JobConfiguration {
 	}
 	
 	@Bean
-	public CustomDeleteItemWriter customDeleteItemWriter(PersonItemReader personItemReader) {
-	    Set<Long> flatFileIds = personItemReader.readFlatFileIds(); // Use the method to read flat file IDs
-	    return new CustomDeleteItemWriter(dataSource, flatFileIds, personItemReader);
-	}
+    public ItemProcessor<Person, Person> personProcessor() {
+        return new PersonProcessor();
+    }
 	
- 
-	@Autowired
-    private StepService stepService;
+//	@Bean
+//	public CustomDeleteItemWriter customDeleteItemWriter(PersonItemReader personItemReader) {
+//	    Set<Long> flatFileIds = personItemReader.readFlatFileIds(); // Use the method to read flat file IDs
+//	    return new CustomDeleteItemWriter(dataSource, flatFileIds, personItemReader);
+//	}
+	
+// 
+//	@Autowired
+//    private StepService stepService;
+	
+//	@Autowired
+//    private DatabaseUtility databaseUtility;
+
+//    @Bean
+//    @StepScope
+//    public DatabaseUtility stepScopedDatabaseUtility() {
+//        return databaseUtility;
+//    }
     
     
     @Bean
@@ -128,19 +145,21 @@ public class JobConfiguration {
         return stepBuilderFactory.get("step1And3")
             .<Person, Person>chunk(10)
             .reader(personItemReader())
+            .processor(personProcessor())
             .writer(personItemWriter)
-            .listener(new StepExecutionListener() {
-                @Override
-                public void beforeStep(StepExecution stepExecution) {
-                    stepService.beforeStep(stepExecution);
-                }
-
-                @Override
-                public ExitStatus afterStep(StepExecution stepExecution) {
-                    stepService.afterStep(stepExecution);
-                    return null;
-                }
-            })
+//            .listener(new MyStepExecutionListener(stepScopedDatabaseUtility()))
+//            .listener(new StepExecutionListener() {
+//                @Override
+//                public void beforeStep(StepExecution stepExecution) {
+//                    stepService.beforeStep(stepExecution);
+//                }
+//
+//                @Override
+//                public ExitStatus afterStep(StepExecution stepExecution) {
+//                    stepService.afterStep(stepExecution);
+//                    return null;
+//                }
+//            })
             .build();
     }
 	

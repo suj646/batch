@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.batch.item.ExecutionContext;
@@ -16,11 +17,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
+import io.spring.batch.CustomPersonItemProcessor;
 import io.spring.batch.PersonItemReader;
 
 @Component
 public class DatabaseUtility {
-
+	private static final Logger logger = Logger.getLogger(CustomPersonItemProcessor.class.getName());
     private final DataSource dataSource;
     private final PersonItemReader personItemReader;
 
@@ -30,8 +32,13 @@ public class DatabaseUtility {
     }
 
     public Set<Long> readIdsFromFlatFile() {
-        // Use the PersonItemReader to read IDs from the CSV file
-        return personItemReader.readFlatFileIds();
+    	logger.info("Reading IDs from flat file.");
+        Set<Long> ids = personItemReader.readFlatFileIds();
+//        logger.info("Read {} IDs from flat file.", ids.size());
+//        logger.info(null);
+        System.out.println("Read {} IDs from flat file."+ ids.size());
+        return ids;
+
     }
 
     public void deleteIdsNotInFlatFile(Set<Long> idsInFlatFile) {

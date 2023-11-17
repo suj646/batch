@@ -1,0 +1,84 @@
+@Override
+public Student process(Person person) throws Exception {
+    boolean personExistsInPerson = checkIfPersonExistsInPersonTable(person);
+    boolean personExistsInStudent = checkIfPersonExistsInStudentTable(person);
+
+    if (personExistsInPerson) {
+        if (personExistsInStudent) {
+            Student student = new Student();
+            student.setId1(person.getId1());
+            student.setFirstName(person.getFirstName());
+            student.setLastName(person.getLastName());
+            student.setBirthdate(person.getBirthdate());
+            // Set age and city if they exist
+            student.setAge(age); // Set the actual age value
+            student.setCity(city); // Set the actual city value
+            return student;
+        }
+    } else {
+        deleteStudentRecord(person.getId1);
+    }
+
+    // If person does not exist or the student does not exist
+    Student student = new Student();
+    student.setId1(person.getId1());
+    student.setFirstName(person.getFirstName());
+    student.setLastName(person.getLastName());
+    student.setBirthdate(person.getBirthdate());
+    return student;
+}
+
+
+
+
+--------------------------------------------------------------------------------------
+public class StudentAttributes {
+    private int age;
+    private String city;
+
+    public StudentAttributes(int age, String city) {
+        this.age = age;
+        this.city = city;
+    }
+
+    // Getter and setter methods for age and city
+}
+-------------------------------------------------------------------
+
+private boolean checkIfPersonExistsInStudentTable(Person person, StudentAttributes studentAttributes) {
+    try (Connection connection = dataSource.getConnection()) {
+        String sql = "SELECT COUNT(*) FROM STUDENT WHERE id = ? AND first_name = ? AND last_name = ? AND birthdate = ? AND age = ? AND city = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, person.getId1());
+            preparedStatement.setString(2, person.getFirstName());
+            preparedStatement.setString(3, person.getLastName());
+            preparedStatement.setDate(4, new java.sql.Date(person.getBirthdate().getTime()));
+            
+            // Set 'age' and 'city' from the StudentAttributes instance
+            preparedStatement.setInt(5, studentAttributes.getAge());
+            preparedStatement.setString(6, studentAttributes.getCity());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+---------------------------------------------------
+
+
+
+int age = 25; // Replace with the actual value
+String city = "New York"; // Replace with the actual value
+
+StudentAttributes studentAttributes = new StudentAttributes(age, city);
+
+boolean existsInStudentTable = checkIfPersonExistsInStudentTable(person, studentAttributes);
+
+

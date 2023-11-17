@@ -5,14 +5,13 @@ io\spring\batch\PersonFieldSetMapper.class
 io\spring\batch\Person$PersonBuilder.class
 io\spring\batch\Step3Config.class
 io\spring\batch\PersonItemWriter.class
+io\spring\batch\StudentDefaults.class
 io\spring\batch\CustomDeleteItemWriter.class
 io\spring\batch\StudentItemWriter.class
-io\spring\batch\domain\DatabaseUtility$1$1.class
 io\spring\batch\CustomPersonItemProcessor.class
 io\spring\batch\dto\Sst2BinStagingDTO.class
 io\spring\batch\JobConfiguration.class
 io\spring\batch\PersonToStudentProcessor.class
-io\spring\batch\domain\DatabaseUtility$1.class
 io\spring\batch\domain\PersonFieldSetMapper.class
 io\spring\batch\domain\DatabaseUtility.class
 io\spring\batch\PersonItemProcessor.class
